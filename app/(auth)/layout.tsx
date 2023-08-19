@@ -1,16 +1,19 @@
-// import modules
-import { ClerkProvider } from "@clerk/nextjs";
+//modules
+import React from "react";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
-// style
+//style
 import "../globals.css";
 
-export const metadata = {
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
   title: "Threadling",
   description: "Threadling - Cieko App | Meta Threads Clone",
 };
-
-const font = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -18,9 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${font.className} bg-dark-1`}>{children}</body>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang='en'>
+        <body className={`${inter.className} bg-dark-1`}>{children}</body>
       </html>
     </ClerkProvider>
   );
