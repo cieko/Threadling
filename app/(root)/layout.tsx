@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 // custom modules
-import Topbar from "@/components/shared/TOpbar";
+import Topbar from "@/components/shared/Topbar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import RightSidebar from "@/components/shared/RightSidebar";
 import Bottombar from "@/components/shared/Bottombar";
@@ -12,7 +12,7 @@ import Bottombar from "@/components/shared/Bottombar";
 // style
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Threadling",
@@ -26,16 +26,19 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={font.className}>
           <Topbar />
-          <main>
+
+          <main className="flex flex-row">
             <LeftSidebar />
             <section className="main-container">
               <div className="w-full max-w-4xl">{children}</div>
             </section>
+            {/* @ts-ignore */}
             <RightSidebar />
           </main>
+
           <Bottombar />
         </body>
       </html>
