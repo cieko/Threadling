@@ -15,7 +15,7 @@ export default async function Home() {
   const result = await fetchPosts(1, 30);
 
   return (
-    <>
+    <div suppressHydrationWarning>
       <h1 className={`head-text text-left ${styles["bg-threadling"]}`}>Home</h1>
 
       <section className="mt-9 flex flex-col gap-10">
@@ -39,6 +39,6 @@ export default async function Home() {
           </>
         )}
       </section>
-    </>
+    </div>
   );
 }
