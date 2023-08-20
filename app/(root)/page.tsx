@@ -1,21 +1,36 @@
 //
+import { redirect } from "next/navigation";
 import { UserButton, currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 //
 import ThreadCard from "@/components/cards/ThreadCard";
+import Pagination from "@/components/shared/Pagination";
 
 import { fetchPosts } from "@/lib/actions/thread.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 //style
 import styles from "./page.module.css";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
   const user = await currentUser();
-  const result = await fetchPosts(1, 30);
+  if (!user) return null;
+
+  const userInfo = await fetchUser(user.id);
+  if (!userInfo?.onboarded) redirect("/onboarding");
+
+  const result = await fetchPosts(
+    searchParams.page ? +searchParams.page : 1,
+    30
+  );
 
   return (
-    <div suppressHydrationWarning>
+    <>
       <h1 className={`head-text text-left ${styles["bg-threadling"]}`}>Home</h1>
 
       <section className="mt-9 flex flex-col gap-10">
@@ -39,6 +54,11 @@ export default async function Home() {
           </>
         )}
       </section>
-    </div>
+      <Pagination
+        path='/'
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={result.isNext}
+      />
+    </>
   );
 }
